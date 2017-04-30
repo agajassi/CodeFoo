@@ -5,17 +5,13 @@ import android.os.Bundle;
 import android.app.ProgressDialog;
 import android.os.AsyncTask;
 import android.util.Log;
-import android.widget.ListAdapter;
+import android.view.Window;
 import android.widget.ListView;
-import android.widget.SimpleAdapter;
 import android.widget.Toast;
-
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
-
 import java.util.ArrayList;
-import java.util.HashMap;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -25,13 +21,14 @@ public class MainActivity extends AppCompatActivity {
     private ListView listView;
     // JSON data url
     private static String Jsonurl = "http://ign-apis.herokuapp.com/articles?startIndex=30&count=5";
-    ArrayList<HashMap<String, String>> articleJsonList;
     ArrayList<ArticleModel> arrayOfArticles;
     ArticleAdapter adapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        getSupportActionBar().setDisplayShowTitleEnabled(false);
+        getSupportActionBar().hide();
         setContentView(R.layout.activity_main);
         // Construct the data source
         arrayOfArticles = new ArrayList<ArticleModel>();
@@ -72,7 +69,7 @@ public class MainActivity extends AppCompatActivity {
                         String articleType = article.getJSONObject("metadata").getString("articleType");
 
                         JSONArray thumbnails = article.getJSONArray("thumbnails");
-                        String posterUrl = thumbnails.getJSONObject(1).getString("url");
+                        String posterUrl = thumbnails.getJSONObject(2).getString("url");
 
                         ArticleModel aModel = new ArticleModel();
                         aModel.setHeadline(headline);
@@ -81,20 +78,6 @@ public class MainActivity extends AppCompatActivity {
                         aModel.setPosterUrl(posterUrl);
 
                         arrayOfArticles.add(aModel);
-
-                        /*
-                        // tmp hash map for single contact
-                        HashMap<String, String> contact = new HashMap<>();
-
-                        // adding each child node to HashMap key => value
-                        contact.put("headline", headline);
-                        contact.put("publishDate", publishDate);
-                        contact.put("articleType", articleType);
-                        contact.put("posterUrl", posterUrl);
-
-                        // adding contact to contact list
-                        //articleJsonList.add(contact);
-                        */
                     }
                 } catch (final JSONException e) {
                     Log.e(TAG, "Json parsing error: " + e.getMessage());
@@ -136,18 +119,6 @@ public class MainActivity extends AppCompatActivity {
             adapter = new ArticleAdapter(MainActivity.this, arrayOfArticles);
             // Attach the adapter to a ListView
             listView.setAdapter(adapter);
-
-            /*
-            // Updating parsed JSON data into ListView
-            ListAdapter adapter = new SimpleAdapter(
-                    MainActivity.this, articleJsonList,
-                    R.layout.list_item, new String[]{"headline", "publishDate",
-                    "posterUrl"}, new int[]{R.id.headline,R.id.publishDate, R.id.articleType});
-
-            listView.setAdapter(adapter);
-            */
         }
-
-
     }
 }
