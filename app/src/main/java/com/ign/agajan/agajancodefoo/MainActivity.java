@@ -1,5 +1,6 @@
 package com.ign.agajan.agajancodefoo;
 
+import android.graphics.Typeface;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.app.ProgressDialog;
@@ -19,9 +20,10 @@ public class MainActivity extends AppCompatActivity {
     private ProgressDialog progressDialog;
     private ListView listView;
     // JSON data url
-    private static String Jsonurl = "http://ign-apis.herokuapp.com/articles?startIndex=30&count=5";
+    private static String Jsonurl = "http://ign-apis.herokuapp.com/articles?startIndex=22&count=15";
     ArrayList<ArticleModel> arrayOfArticles;
     ArticleAdapter adapter;
+    Typeface custom_font;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -32,6 +34,7 @@ public class MainActivity extends AppCompatActivity {
         // Construct the data source
         arrayOfArticles = new ArrayList<ArticleModel>();
         listView = (ListView) findViewById(R.id.listview);
+        custom_font = Typeface.createFromAsset(getAssets(),  "fonts/din_alt.ttf");
         new GetArticles().execute();
     }
 
@@ -65,15 +68,13 @@ public class MainActivity extends AppCompatActivity {
                         JSONObject article = articles.getJSONObject(i);
                         String headline = article.getJSONObject("metadata").getString("headline");
                         String publishDate = article.getJSONObject("metadata").getString("publishDate");
-                        String articleType = article.getJSONObject("metadata").getString("articleType");
 
                         JSONArray thumbnails = article.getJSONArray("thumbnails");
                         String posterUrl = thumbnails.getJSONObject(2).getString("url");
 
                         ArticleModel aModel = new ArticleModel();
                         aModel.setHeadline(headline);
-                        aModel.setArticleType(articleType);
-                        aModel.setPublishDate(publishDate);
+                        aModel.setPublishedSince(publishDate);
                         aModel.setPosterUrl(posterUrl);
 
                         arrayOfArticles.add(aModel);
@@ -115,7 +116,7 @@ public class MainActivity extends AppCompatActivity {
                 progressDialog.dismiss();
 
             // Create the adapter to convert the array to views
-            adapter = new ArticleAdapter(MainActivity.this, arrayOfArticles);
+            adapter = new ArticleAdapter(MainActivity.this, arrayOfArticles, custom_font);
             // Attach the adapter to a ListView
             listView.setAdapter(adapter);
         }

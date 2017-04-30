@@ -3,6 +3,7 @@ package com.ign.agajan.agajancodefoo;
 import java.util.ArrayList;
 
 import android.content.Context;
+import android.graphics.Typeface;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -18,8 +19,11 @@ import com.squareup.picasso.Picasso;
 
 public class ArticleAdapter extends ArrayAdapter<ArticleModel> {
 
-    public ArticleAdapter(Context context, ArrayList<ArticleModel> articles) {
+    Typeface custom_font;
+
+    public ArticleAdapter(Context context, ArrayList<ArticleModel> articles, Typeface custom_font) {
         super(context, 0, articles);
+        this.custom_font = custom_font;
     }
 
     @Override
@@ -31,12 +35,14 @@ public class ArticleAdapter extends ArrayAdapter<ArticleModel> {
         if (convertView == null) {
             LayoutInflater inflater = LayoutInflater.from(getContext());
             convertView = inflater.inflate(R.layout.list_item, null);
-            //convertView = LayoutInflater.from(getContext()).inflate(R.layout.list_item, parent, false);
         }
         // Lookup view for data population
         TextView headline = (TextView) convertView.findViewById(R.id.headline);
         TextView publishDate = (TextView) convertView.findViewById(R.id.publishDate);
         ImageView ivPosterImage = (ImageView) convertView.findViewById(R.id.ivPosterImage);
+
+        headline.setTypeface(custom_font);
+        publishDate.setTypeface(custom_font);
 
         // Populate the data into the template view using the data object
         headline.setText(article.getHeadline());
