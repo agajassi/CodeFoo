@@ -5,7 +5,6 @@ import android.os.Bundle;
 import android.app.ProgressDialog;
 import android.os.AsyncTask;
 import android.util.Log;
-import android.view.Window;
 import android.widget.ListView;
 import android.widget.Toast;
 import org.json.JSONArray;
