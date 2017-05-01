@@ -5,18 +5,32 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:paddingBottom="@dimen/activity_vertical_margin"
-    android:paddingLeft="@dimen/activity_horizontal_margin"
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/activity_vertical_margin"
     android:background="@color/black"
     android:orientation="vertical"
     tools:context="com.ign.agajan.agajancodefoo.MainActivity">
 
+    <TextView
+        android:id="@+id/videos"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:paddingBottom="6dip"
+        android:paddingTop="6dip"
+        android:textColor="@color/white"
+        android:textSize="20sp"
+        android:textStyle="bold"
+        android:text="Videos"
+        android:textAlignment="center"
+        android:textAllCaps="true"/>
+
     <ListView
-        android:id="@+id/articleListview"
+        android:id="@+id/videoListview"
+        android:layout_below="@id/videos"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:divider="#00000000"
+        android:orientation="horizontal"
         android:dividerHeight="10dp" >
     </ListView>
 </RelativeLayout>

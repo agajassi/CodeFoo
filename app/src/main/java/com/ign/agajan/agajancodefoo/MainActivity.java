@@ -18,11 +18,14 @@ public class MainActivity extends AppCompatActivity {
     private String TAG = MainActivity.class.getSimpleName();
 
     private ProgressDialog progressDialog;
-    private ListView listView;
-    // JSON data url
-    private static String Jsonurl = "http://ign-apis.herokuapp.com/articles?startIndex=22&count=15";
+    private ListView alistView; // listView for articles
+    //private ListView vlistView; // listView for videos
+    private static String JsonArticleUrl = "http://ign-apis.herokuapp.com/articles?startIndex=30&count=8";
+    private static String JsonVideoUrl = "http://ign-apis.herokuapp.com/videos?startIndex=9&count=5";
+
     ArrayList<ArticleModel> arrayOfArticles;
-    ArticleAdapter adapter;
+    ArrayList<VideoModel> arrayOfVideos;
+    ArticleAdapter articleAdapter;
     Typeface custom_font;
 
     @Override
@@ -31,9 +34,13 @@ public class MainActivity extends AppCompatActivity {
         getSupportActionBar().setDisplayShowTitleEnabled(false);
         getSupportActionBar().hide();
         setContentView(R.layout.activity_main);
+
         // Construct the data source
         arrayOfArticles = new ArrayList<ArticleModel>();
-        listView = (ListView) findViewById(R.id.listview);
+        arrayOfVideos = new ArrayList<VideoModel>();
+
+        alistView = (ListView) findViewById(R.id.articleListview);
+        //vlistView = (ListView) findViewById(R.id.videoListview);
         custom_font = Typeface.createFromAsset(getAssets(),  "fonts/din_alt.ttf");
         new GetArticles().execute();
     }
@@ -55,30 +62,15 @@ public class MainActivity extends AppCompatActivity {
             HttpHandler httpHandler = new HttpHandler();
 
             // request to json data url and getting response
-            String jsonString = httpHandler.makeServiceCall(Jsonurl);
-            Log.e(TAG, "Response from url: " + jsonString);
-            if (jsonString != null) {
+            String aJsonString = httpHandler.makeServiceCall(JsonArticleUrl);
+            String vJsonString = httpHandler.makeServiceCall(JsonVideoUrl);
+
+            Log.e(TAG, "Article response from url: " + aJsonString);
+            Log.e(TAG, "Video response from url: " + vJsonString);
+            if ((aJsonString != null) && (vJsonString != null)) {
                 try {
-                    JSONObject jsonObject = new JSONObject(jsonString);
-                    // Getting JSON Array node
-                    JSONArray articles = jsonObject.getJSONArray("data");
-
-                    for (int i = 0; i < articles.length(); i++) {
-
-                        JSONObject article = articles.getJSONObject(i);
-                        String headline = article.getJSONObject("metadata").getString("headline");
-                        String publishDate = article.getJSONObject("metadata").getString("publishDate");
-
-                        JSONArray thumbnails = article.getJSONArray("thumbnails");
-                        String posterUrl = thumbnails.getJSONObject(2).getString("url");
-
-                        ArticleModel aModel = new ArticleModel();
-                        aModel.setHeadline(headline);
-                        aModel.setPublishedSince(publishDate);
-                        aModel.setPosterUrl(posterUrl);
-
-                        arrayOfArticles.add(aModel);
-                    }
+                    processArticlesJson(aJsonString);
+                    processVideosJson(vJsonString);
                 } catch (final JSONException e) {
                     Log.e(TAG, "Json parsing error: " + e.getMessage());
                     runOnUiThread(new Runnable() {
@@ -108,6 +100,60 @@ public class MainActivity extends AppCompatActivity {
             return null;
         }
 
+        /**
+         * Processes jsonString by parsing individual fields and
+         * populates arrayOfArticles with ArticleModel.
+         * @param jsonString
+         * @throws JSONException
+         */
+        protected void processArticlesJson(String jsonString) throws JSONException {
+            JSONObject jsonObject = new JSONObject(jsonString);
+            // Getting JSON Array node
+            JSONArray articles = jsonObject.getJSONArray("data");
+
+            for (int i = 0; i < articles.length(); i++) {
+                JSONObject article = articles.getJSONObject(i);
+                String headline = article.getJSONObject("metadata").getString("headline");
+                String publishDate = article.getJSONObject("metadata").getString("publishDate");
+
+                JSONArray thumbnails = article.getJSONArray("thumbnails");
+                String posterUrl = thumbnails.getJSONObject(2).getString("url");
+
+                ArticleModel aModel = new ArticleModel();
+                aModel.setHeadline(headline);
+                aModel.setPublishedSince(publishDate);
+                aModel.setPosterUrl(posterUrl);
+
+                arrayOfArticles.add(aModel);
+            }
+        }
+
+        /**
+         * Processes jsonString by parsing individual fields and
+         * populates arrayOfVideos with VideoModel.
+         * @param jsonString
+         * @throws JSONException
+         */
+        protected void processVideosJson(String jsonString) throws JSONException {
+            JSONObject jsonObject = new JSONObject(jsonString);
+            // Getting JSON Array node
+            JSONArray videos = jsonObject.getJSONArray("data");
+
+            for (int i = 0; i < videos.length(); i++) {
+                JSONObject video = videos.getJSONObject(i);
+                String headline = video.getJSONObject("metadata").getString("name");
+
+                JSONArray thumbnails = video.getJSONArray("thumbnails");
+                String posterUrl = thumbnails.getJSONObject(0).getString("url");
+
+                VideoModel vModel = new VideoModel();
+                vModel.setHeadline(headline);
+                vModel.setPosterUrl(posterUrl);
+
+                arrayOfVideos.add(vModel);
+            }
+        }
+
         @Override
         protected void onPostExecute(Void result) {
             super.onPostExecute(result);
@@ -116,9 +162,13 @@ public class MainActivity extends AppCompatActivity {
                 progressDialog.dismiss();
 
             // Create the adapter to convert the array to views
-            adapter = new ArticleAdapter(MainActivity.this, arrayOfArticles, custom_font);
+            articleAdapter = new ArticleAdapter(MainActivity.this, arrayOfArticles, custom_font, arrayOfVideos);
+
             // Attach the adapter to a ListView
-            listView.setAdapter(adapter);
+            alistView.setAdapter(articleAdapter);
+            //vlistView.setAdapter(videoAdapter);
+
+            Log.e(TAG, "Video array size: " + arrayOfVideos.size());
         }
     }
 }
