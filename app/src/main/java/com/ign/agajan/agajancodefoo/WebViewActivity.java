@@ -3,6 +3,7 @@ package com.ign.agajan.agajancodefoo;
 import android.app.Activity;
 import android.os.Bundle;
 import android.webkit.WebView;
+import android.webkit.WebViewClient;
 
 /**
  * Created by ajumakuliyev on 4/30/17.
@@ -17,7 +18,7 @@ public class WebViewActivity extends Activity {
         webView = (WebView) findViewById(R.id.webView1);
         webView.getSettings().setJavaScriptEnabled(true);
         webView.loadUrl("http://www.ign.com");
-
+        webView.setWebViewClient(new WebViewClient());
     }
 
 }
