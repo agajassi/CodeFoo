@@ -21,6 +21,8 @@ public class WebViewActivity extends Activity {
         setContentView(R.layout.article_webview);
         webView = (WebView) findViewById(R.id.webView1);
         webView.getSettings().setJavaScriptEnabled(true);
+        //Retrieve the url that you put into your intent
+        String url = getIntent().getStringExtra("URL");
         webView.loadUrl(url);
         webView.setWebViewClient(new WebViewClient());
     }

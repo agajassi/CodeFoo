@@ -171,8 +171,8 @@ public class MainActivity extends AppCompatActivity {
                 public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                     String urlToLoad = articleAdapter.getItem(position).getPosterUrl();
                     WebViewActivity wbActivity = new WebViewActivity();
-                    wbActivity.setUrl(urlToLoad);
                     Intent intent = new Intent(MainActivity.this, wbActivity.getClass());
+                    intent.putExtra("URL", urlToLoad);
                     startActivity(intent);
                 }
             });

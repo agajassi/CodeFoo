@@ -83,7 +83,6 @@ public class ArticleAdapter extends ArrayAdapter<ArticleModel> {
                 horizontal_recycler_view.setAdapter(horizontalAdapter);
             }
         }
-
         return v;
     }
 
