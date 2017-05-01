@@ -6,7 +6,6 @@ import android.content.Context;
 import android.graphics.Typeface;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -21,8 +20,9 @@ import com.squareup.picasso.Picasso;
  */
 
 public class ArticleAdapter extends ArrayAdapter<ArticleModel> {
+    public static final int ARTICLE_ITEM_ROW = 0;
+    public static final int HORIZONTAL_VIDEOS_LIST_ROW = 1;
     Typeface custom_font;
-    VideoAdapter videoAdapter;
     ArrayList<VideoModel> arrayOfVideos;
     RecyclerView horizontal_recycler_view;
     HorizontalAdapter horizontalAdapter;
@@ -39,10 +39,10 @@ public class ArticleAdapter extends ArrayAdapter<ArticleModel> {
     @Override
     public int getItemViewType(int position) {
         if((position%3 == 0) && (position != 0)) {
-            return 1;
+            return HORIZONTAL_VIDEOS_LIST_ROW;
         }
         else {
-            return 0;
+            return ARTICLE_ITEM_ROW;
         }
     }
 
@@ -52,12 +52,11 @@ public class ArticleAdapter extends ArrayAdapter<ArticleModel> {
         int type = getItemViewType(position);
         // Get the data item for this position
         ArticleModel article = getItem(position);
-        videoAdapter = new VideoAdapter(getContext(), arrayOfVideos, custom_font);
 
         if (v == null) {
             // Inflate the layout according to the view type
             LayoutInflater inflater = LayoutInflater.from(getContext());
-            if (type == 0) {
+            if (type == ARTICLE_ITEM_ROW) {
                 // Inflate the layout with image
                 v = inflater.inflate(R.layout.list_item, null);
 
@@ -82,9 +81,6 @@ public class ArticleAdapter extends ArrayAdapter<ArticleModel> {
                 LinearLayoutManager horizontalLayoutManager = new LinearLayoutManager(getContext(), LinearLayoutManager.HORIZONTAL, false);
                 horizontal_recycler_view.setLayoutManager(horizontalLayoutManager);
                 horizontal_recycler_view.setAdapter(horizontalAdapter);
-
-                String TAG = MainActivity.class.getSimpleName();
-                Log.e(TAG, "Video adapter size: " + videoAdapter.getCount());
             }
         }
 
