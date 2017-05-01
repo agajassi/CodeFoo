@@ -17,12 +17,12 @@ import org.json.JSONObject;
 import java.util.ArrayList;
 
 public class MainActivity extends AppCompatActivity {
-
+    private static final String BASE_URL = "http://www.ign.com/articles/";
+    private static String JsonArticleUrl = "http://ign-apis.herokuapp.com/articles?startIndex=30&count=13";
+    private static String JsonVideoUrl = "http://ign-apis.herokuapp.com/videos?startIndex=9&count=9";
     private String TAG = MainActivity.class.getSimpleName();
     private ProgressDialog progressDialog;
     private ListView alistView; // listView for articles
-    private static String JsonArticleUrl = "http://ign-apis.herokuapp.com/articles?startIndex=30&count=13";
-    private static String JsonVideoUrl = "http://ign-apis.herokuapp.com/videos?startIndex=9&count=9";
 
     ArrayList<ArticleModel> arrayOfArticles;
     ArrayList<VideoModel> arrayOfVideos;
@@ -114,6 +114,7 @@ public class MainActivity extends AppCompatActivity {
                 JSONObject article = articles.getJSONObject(i);
                 String headline = article.getJSONObject("metadata").getString("headline");
                 String publishDate = article.getJSONObject("metadata").getString("publishDate");
+                String slug = article.getJSONObject("metadata").getString("slug");
 
                 JSONArray thumbnails = article.getJSONArray("thumbnails");
                 String posterUrl = thumbnails.getJSONObject(2).getString("url");
@@ -122,6 +123,7 @@ public class MainActivity extends AppCompatActivity {
                 aModel.setHeadline(headline);
                 aModel.setPublishedSince(publishDate);
                 aModel.setPosterUrl(posterUrl);
+                aModel.setArticleUrl(BASE_URL + slug);
 
                 arrayOfArticles.add(aModel);
             }
@@ -169,7 +171,7 @@ public class MainActivity extends AppCompatActivity {
             alistView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
                 @Override
                 public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                    String urlToLoad = articleAdapter.getItem(position).getPosterUrl();
+                    String urlToLoad = articleAdapter.getItem(position).getArticleUrl();
                     WebViewActivity wbActivity = new WebViewActivity();
                     Intent intent = new Intent(MainActivity.this, wbActivity.getClass());
                     intent.putExtra("URL", urlToLoad);

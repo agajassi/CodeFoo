@@ -12,6 +12,7 @@ public class ArticleModel {
     private String headline;
     private String publishDate;
     private String posterUrl;
+    private String articleUrl;
 
     public void setHeadline(String headline) {
         this.headline = headline;
@@ -19,6 +20,10 @@ public class ArticleModel {
 
     public void setPosterUrl(String posterUrl) {
         this.posterUrl = posterUrl;
+    }
+
+    public void setArticleUrl(String articleUrl) {
+        this.articleUrl = articleUrl;
     }
 
     public void setPublishedSince(String fullDate) {
@@ -59,5 +64,9 @@ public class ArticleModel {
 
     public String getPosterUrl() {
         return posterUrl;
+    }
+
+    public String getArticleUrl() {
+        return articleUrl;
     }
 }
