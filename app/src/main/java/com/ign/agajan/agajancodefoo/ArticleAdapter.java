@@ -4,9 +4,11 @@ import java.util.ArrayList;
 
 import android.content.Context;
 import android.graphics.Typeface;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.ListView;
@@ -56,6 +58,7 @@ public class ArticleAdapter extends ArrayAdapter<ArticleModel> {
             if (type == 0) {
                 // Inflate the layout with image
                 v = inflater.inflate(R.layout.list_item, null);
+
                 // Lookup view for data population
                 TextView headline = (TextView) v.findViewById(R.id.headline);
                 TextView publishDate = (TextView) v.findViewById(R.id.publishDate);
@@ -68,10 +71,15 @@ public class ArticleAdapter extends ArrayAdapter<ArticleModel> {
                 headline.setText(article.getHeadline());
                 publishDate.setText(article.getPublishDate());
                 Picasso.with(getContext()).load(article.getPosterUrl()).into(ivPosterImage);
-            } else {
+            }
+
+            else {
                 v = inflater.inflate(R.layout.video_list, null);
                 ListView vlistView = (ListView) v.findViewById(R.id.videoListview);
                 vlistView.setAdapter(videoAdapter);
+
+                String TAG = MainActivity.class.getSimpleName();
+                Log.e(TAG, "Video adapter size: " + videoAdapter.getCount());
             }
         }
 
