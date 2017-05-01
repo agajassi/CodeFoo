@@ -4,14 +4,14 @@ import java.util.ArrayList;
 
 import android.content.Context;
 import android.graphics.Typeface;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ImageView;
-import android.widget.ListView;
 import android.widget.TextView;
 
 import com.squareup.picasso.Picasso;
@@ -24,6 +24,8 @@ public class ArticleAdapter extends ArrayAdapter<ArticleModel> {
     Typeface custom_font;
     VideoAdapter videoAdapter;
     ArrayList<VideoModel> arrayOfVideos;
+    RecyclerView horizontal_recycler_view;
+    HorizontalAdapter horizontalAdapter;
 
     public ArticleAdapter(Context context, ArrayList<ArticleModel> articles, Typeface custom_font, ArrayList<VideoModel> arrayOfVideos) {
         super(context, 0, articles);
@@ -75,8 +77,11 @@ public class ArticleAdapter extends ArrayAdapter<ArticleModel> {
 
             else {
                 v = inflater.inflate(R.layout.video_list, null);
-                ListView vlistView = (ListView) v.findViewById(R.id.videoListview);
-                vlistView.setAdapter(videoAdapter);
+                horizontal_recycler_view= (RecyclerView) v.findViewById(R.id.horizontal_recycler_view);
+                horizontalAdapter=new HorizontalAdapter(arrayOfVideos, getContext());
+                LinearLayoutManager horizontalLayoutManager = new LinearLayoutManager(getContext(), LinearLayoutManager.HORIZONTAL, false);
+                horizontal_recycler_view.setLayoutManager(horizontalLayoutManager);
+                horizontal_recycler_view.setAdapter(horizontalAdapter);
 
                 String TAG = MainActivity.class.getSimpleName();
                 Log.e(TAG, "Video adapter size: " + videoAdapter.getCount());

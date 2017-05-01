@@ -24,13 +24,17 @@
         android:textAlignment="center"
         android:textAllCaps="true"/>
 
-    <ListView
-        android:id="@+id/videoListview"
-        android:layout_below="@id/videos"
+    <LinearLayout
         android:layout_width="fill_parent"
+        android:background="@color/black"
         android:layout_height="wrap_content"
-        android:divider="#00000000"
-        android:orientation="horizontal"
-        android:dividerHeight="10dp" >
-    </ListView>
+        android:layout_below="@id/videos">
+
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/horizontal_recycler_view"
+            android:background="@color/black"
+            android:layout_width="wrap_content"
+            android:layout_height="fill_parent"
+            />
+    </LinearLayout>
 </RelativeLayout>

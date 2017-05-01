@@ -21,8 +21,8 @@ public class MainActivity extends AppCompatActivity {
     private String TAG = MainActivity.class.getSimpleName();
     private ProgressDialog progressDialog;
     private ListView alistView; // listView for articles
-    private static String JsonArticleUrl = "http://ign-apis.herokuapp.com/articles?startIndex=30&count=8";
-    private static String JsonVideoUrl = "http://ign-apis.herokuapp.com/videos?startIndex=9&count=5";
+    private static String JsonArticleUrl = "http://ign-apis.herokuapp.com/articles?startIndex=30&count=13";
+    private static String JsonVideoUrl = "http://ign-apis.herokuapp.com/videos?startIndex=9&count=9";
 
     ArrayList<ArticleModel> arrayOfArticles;
     ArrayList<VideoModel> arrayOfVideos;
@@ -44,7 +44,6 @@ public class MainActivity extends AppCompatActivity {
         custom_font = Typeface.createFromAsset(getAssets(),  "fonts/din_alt.ttf");
         new GetStuffFromAPI().execute();
     }
-
 
     private class GetStuffFromAPI extends AsyncTask<Void, Void, Void> {
         @Override
