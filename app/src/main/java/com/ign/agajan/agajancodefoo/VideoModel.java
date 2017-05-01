@@ -7,6 +7,11 @@ package com.ign.agajan.agajancodefoo;
 public class VideoModel {
     private String headline;
     private String posterUrl;
+    private String videoUrl;
+
+    public void setVideoUrl(String videoUrl) {
+        this.videoUrl = videoUrl;
+    }
 
     public void setHeadline(String headline) {
         this.headline = headline;
@@ -22,5 +27,9 @@ public class VideoModel {
 
     public String getPosterUrl() {
         return posterUrl;
+    }
+
+    public String getVideoUrl() {
+        return videoUrl;
     }
 }

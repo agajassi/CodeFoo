@@ -26,7 +26,7 @@ public class ArticleAdapter extends ArrayAdapter<ArticleModel> {
     ArrayList<VideoModel> arrayOfVideos;
     RecyclerView horizontal_recycler_view;
     HorizontalAdapter horizontalAdapter;
-
+    
     public ArticleAdapter(Context context, ArrayList<ArticleModel> articles, Typeface custom_font, ArrayList<VideoModel> arrayOfVideos) {
         super(context, 0, articles);
         this.custom_font = custom_font;
@@ -76,8 +76,8 @@ public class ArticleAdapter extends ArrayAdapter<ArticleModel> {
 
             else {
                 v = inflater.inflate(R.layout.video_list, null);
-                horizontal_recycler_view= (RecyclerView) v.findViewById(R.id.horizontal_recycler_view);
-                horizontalAdapter=new HorizontalAdapter(arrayOfVideos, getContext());
+                horizontal_recycler_view = (RecyclerView) v.findViewById(R.id.horizontal_recycler_view);
+                horizontalAdapter = new HorizontalAdapter(arrayOfVideos, getContext());
                 LinearLayoutManager horizontalLayoutManager = new LinearLayoutManager(getContext(), LinearLayoutManager.HORIZONTAL, false);
                 horizontal_recycler_view.setLayoutManager(horizontalLayoutManager);
                 horizontal_recycler_view.setAdapter(horizontalAdapter);

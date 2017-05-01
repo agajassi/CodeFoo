@@ -18,8 +18,8 @@ import java.util.ArrayList;
 
 public class MainActivity extends AppCompatActivity {
     private static final String BASE_URL = "http://www.ign.com/articles/";
-    private static String JsonArticleUrl = "http://ign-apis.herokuapp.com/articles?startIndex=30&count=13";
-    private static String JsonVideoUrl = "http://ign-apis.herokuapp.com/videos?startIndex=9&count=9";
+    private static String JsonArticleUrl = "http://ign-apis.herokuapp.com/articles?startIndex=29&count=12";
+    private static String JsonVideoUrl = "http://ign-apis.herokuapp.com/videos?startIndex=10&count=12";
     private String TAG = MainActivity.class.getSimpleName();
     private ProgressDialog progressDialog;
     private ListView alistView; // listView for articles
@@ -143,13 +143,14 @@ public class MainActivity extends AppCompatActivity {
             for (int i = 0; i < videos.length(); i++) {
                 JSONObject video = videos.getJSONObject(i);
                 String headline = video.getJSONObject("metadata").getString("name");
-
+                String videoUrl = video.getJSONObject("metadata").getString("url");
                 JSONArray thumbnails = video.getJSONArray("thumbnails");
                 String posterUrl = thumbnails.getJSONObject(0).getString("url");
 
                 VideoModel vModel = new VideoModel();
                 vModel.setHeadline(headline);
                 vModel.setPosterUrl(posterUrl);
+                vModel.setVideoUrl(videoUrl);
 
                 arrayOfVideos.add(vModel);
             }

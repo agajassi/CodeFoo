@@ -1,13 +1,13 @@
 package com.ign.agajan.agajancodefoo;
 
 import android.content.Context;
+import android.content.Intent;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.squareup.picasso.Picasso;
 
@@ -57,12 +57,14 @@ public class HorizontalAdapter extends RecyclerView.Adapter<HorizontalAdapter.My
             @Override
 
             public void onClick(View v) {
-                String list = videos.get(position).getHeadline().toString();
-                Toast.makeText(context, list, Toast.LENGTH_SHORT).show();
+                String videoUrl = videos.get(position).getVideoUrl();
+                WebViewActivity wbActivity = new WebViewActivity();
+                Intent intent = new Intent(context, wbActivity.getClass());
+                intent.putExtra("URL", videoUrl);
+                context.startActivity(intent);
             }
 
         });
-
     }
 
 
