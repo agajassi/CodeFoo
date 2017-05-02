@@ -26,7 +26,7 @@ public class ArticleAdapter extends ArrayAdapter<ArticleModel> {
     ArrayList<VideoModel> arrayOfVideos;
     RecyclerView horizontal_recycler_view;
     HorizontalAdapter horizontalAdapter;
-    
+
     public ArticleAdapter(Context context, ArrayList<ArticleModel> articles, Typeface custom_font, ArrayList<VideoModel> arrayOfVideos) {
         super(context, 0, articles);
         this.custom_font = custom_font;
