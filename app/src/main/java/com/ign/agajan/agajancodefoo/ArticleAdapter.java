@@ -6,13 +6,13 @@ import android.content.Context;
 import android.graphics.Typeface;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.RecyclerView.ViewHolder;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
-
 import com.squareup.picasso.Picasso;
 
 /**
@@ -46,34 +46,49 @@ public class ArticleAdapter extends ArrayAdapter<ArticleModel> {
         }
     }
 
+    /**
+     * Returns customized view of rows. Rows will contain either
+     * article item or a listview of video items that scrolls
+     * horizontally. List of video items will be rendered after
+     * every 3 article items.
+     * @param position
+     * @param convertView
+     * @param parent
+     * @return customized view.
+     */
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
         View v = convertView;
+        final ViewHolder holder;
         int type = getItemViewType(position);
         // Get the data item for this position
         ArticleModel article = getItem(position);
+        // Inflate the layout according to the view type
+        LayoutInflater inflater = LayoutInflater.from(getContext());
 
         if (v == null) {
-            // Inflate the layout according to the view type
-            LayoutInflater inflater = LayoutInflater.from(getContext());
+            holder = new ViewHolder();
+
+            // Inflate the layout with image
+            v = inflater.inflate(R.layout.list_item, null);
+
+            // get views and assign them to holder fields
+            holder.headline = (TextView) v.findViewById(R.id.headline);
+            holder.publishDate = (TextView) v.findViewById(R.id.publishDate);
+            holder.ivPosterImage = (ImageView) v.findViewById(R.id.ivPosterImage);
+            v.setTag(holder);
+        }
+        else {
+            holder = (ViewHolder) v.getTag();
             if (type == ARTICLE_ITEM_ROW) {
-                // Inflate the layout with image
-                v = inflater.inflate(R.layout.list_item, null);
-
-                // Lookup view for data population
-                TextView headline = (TextView) v.findViewById(R.id.headline);
-                TextView publishDate = (TextView) v.findViewById(R.id.publishDate);
-                ImageView ivPosterImage = (ImageView) v.findViewById(R.id.ivPosterImage);
-
-                headline.setTypeface(custom_font);
-                publishDate.setTypeface(custom_font);
+                holder.headline.setTypeface(custom_font);
+                holder.publishDate.setTypeface(custom_font);
 
                 // Populate the data into the template view using the data object
-                headline.setText(article.getHeadline());
-                publishDate.setText(article.getPublishDate());
-                Picasso.with(getContext()).load(article.getPosterUrl()).into(ivPosterImage);
+                holder.headline.setText(article.getHeadline());
+                holder.publishDate.setText(article.getPublishDate());
+                Picasso.with(getContext()).load(article.getPosterUrl()).into(holder.ivPosterImage);
             }
-
             else {
                 v = inflater.inflate(R.layout.video_list, null);
                 horizontal_recycler_view = (RecyclerView) v.findViewById(R.id.horizontal_recycler_view);
@@ -84,6 +99,13 @@ public class ArticleAdapter extends ArrayAdapter<ArticleModel> {
             }
         }
         return v;
+    }
+
+    // holds view elements
+    private class ViewHolder {
+        private TextView headline;
+        private TextView publishDate;
+        private ImageView ivPosterImage;
     }
 
 }
